@@ -19,8 +19,11 @@ def is_int(val):
          
 lot = float(input("# of Stocks: "))
 bedelsiz_yuzde = 322.53521
+
 yeni_lot_sayisi = int(lot) * (bedelsiz_yuzde)/100
 print(yeni_lot_sayisi)
+decimal = str(yeni_lot_sayisi-int(yeni_lot_sayisi)).split('.')[1]
+print("You have 0." + str(decimal) + " as decimal")
 
 options_list = []
 checker = 0
