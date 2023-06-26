@@ -3,7 +3,8 @@
 Calculate number of stocks needed in capital increase through bonus issues 
 in order to have "integer" number of stocks at the and of capital increase. 
 """
-
+# Initial calculation was based on bonus capital increase of BIST.ISMEN, to be held on 2023
+# 322.53521% 
 def is_int(val):
     if type(val) == int:
          return True
