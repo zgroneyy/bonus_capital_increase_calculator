@@ -2,6 +2,9 @@
 """
 Calculate number of stocks needed in capital increase through bonus issues 
 in order to have "integer" number of stocks at the and of capital increase. 
+
+>>Enter number of stocks you have
+>>Get a list of 5 consist of # of stocks you need to have in order to have integer
 """
 # Initial calculation was based on bonus capital increase of BIST.ISMEN, to be held on 2023
 # 322.53521% 
@@ -25,7 +28,7 @@ check=True
 while check:
     if(is_int((lot + checker)*(bedelsiz_yuzde/100))):
         options_list.append(checker)
-        if len(options_list) == 5:
+        if len(options_list) == 3:
             check=False
     checker+=1
 print(options_list)
