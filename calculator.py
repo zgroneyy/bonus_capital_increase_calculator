@@ -20,18 +20,17 @@ def calculate_stock_options():
     options_list = []
     checker = 0
 
-    while len(options_list) < 3:
+    while len(options_list) < 5:  # Change the loop to find 5 options
         if is_int((lot + checker) * (1 + capital_increase_percentage / 100)):
             options_list.append(checker)
         checker += 1
 
     options_label.config(text=f"Options: {options_list}")
 
-# Create the main window
 root = tk.Tk()
 root.title("Stock Calculator")
+root.configure(bg="#30D5C8")
 
-# Create and place widgets in the window
 label_lot = tk.Label(root, text="Number of Stocks:")
 label_lot.pack()
 
@@ -53,5 +52,4 @@ decimal_label.pack()
 options_label = tk.Label(root, text="")
 options_label.pack()
 
-# Start the GUI event loop
 root.mainloop()
