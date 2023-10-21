@@ -51,7 +51,7 @@ def calculate_stock_options():
         messagebox.showerror("Error", "An error occurred. Please check your inputs.")
 
 root = tk.Tk()
-root.title("Stock Calculator")
+root.title("Bedelsiz Hesaplayıcı - Capital Increase Calculator")
 root.configure(bg="#30D5C8")
 
 label_lot = tk.Label(root, text="Number of Stocks:")
