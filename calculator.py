@@ -1,74 +1,77 @@
 import tkinter as tk
 from tkinter import messagebox
 
+def is_int(val):
+    if type(val) == int:
+        return True
+    else:
+        if val.is_integer():
+            return True
+        else:
+            return False
+
 def calculate_stock_options():
     try:
         lot = float(entry_lot.get())
         capital_increase_percentage = float(entry_percentage.get())
-        desired_stock_count = float(entry_desired_stock_count.get())
 
-        if lot < 0:
-            raise ValueError("Number of stocks cannot be less than 0")
+        if lot == 0:
+            raise ValueError("Number of stocks cannot be zero")
         if capital_increase_percentage == 0:
             raise ValueError("Percentage of capital increase cannot be zero")
-        if desired_stock_count == 0:
-            raise ValueError("Desired stock count cannot be 0")
 
-        yeni_lot_sayisi = lot * (1 + capital_increase_percentage / 100)
-        decimal = yeni_lot_sayisi - int(yeni_lot_sayisi)
-        decimal_label.config(text=f"You have 0.{decimal:.6f} as decimal")
+        yeni_lot_sayisi = round(int(lot) * (1 + capital_increase_percentage / 100), 6)
+        yeni_lot_sayisi_label.config(text=f"Yeni Lot Sayısı: {yeni_lot_sayisi:.6f}")
 
-        stocks_to_buy = max(0, desired_stock_count - lot)
-        stocks_to_buy_label.config(text=f"Stocks to buy before capital increase: {stocks_to_buy}")
+        options_list = []
+        checker = 0
 
-        options_list = [int(lot + i) for i in range(5)]
-        options_label.config(text=f"Options: {options_list}")
+        while len(options_list) < 3:
+            if is_int((lot + checker) * (1 + capital_increase_percentage / 100)):
+                options_list.append(checker)
+            checker += 1
 
-        error_label.config(text="")  # Clear any previous error message
+        options_label.config(text=f"Buy: {options_list} stocks to make it int")
+        options_label.grid(row=5, column=0, columnspan=2, pady=(10, 0), sticky='w')  # Left align options_label
+
     except ValueError as e:
         messagebox.showerror("Error", str(e))
     except Exception as e:
-        messagebox.showerror("Error", "An error occurred. Please check your inputs.")
+        messagebox.showerror("Error", "An error occurred. Please check your inputs")
 
+# Create the main window
 root = tk.Tk()
-root.title("Bedelsiz Hesaplayıcı - Capital Increase Calculator")
-root.geometry("320x400")
-root.attributes("-alpha", 0.5)  # 50% transparent background
+root.title("Stock Calculator")
+root.geometry("420x250")  # Set the window size to 600x250
+root.resizable(0, 0)  # Make the window non-resizable
 
-# Set a uniform color for labels
-label_bg_color = "#C0C0C0"
-
-label_lot = tk.Label(root, text="Number of Stocks:", bg=label_bg_color)
-label_lot.grid(row=0, column=0, sticky="w")
+# Create and place widgets in the window
+label_lot = tk.Label(root, text="Number of Stocks:")
+label_lot.grid(row=0, column=0, padx=10, pady=(10, 0), sticky='w')  # Align left
 
 entry_lot = tk.Entry(root)
-entry_lot.grid(row=0, column=1)
+entry_lot.grid(row=0, column=1, padx=10, pady=(10, 0))
 
-label_percentage = tk.Label(root, text="Percentage of Capital Increase:", bg=label_bg_color)
-label_percentage.grid(row=1, column=0, sticky="w")
+label_percentage = tk.Label(root, text="Percentage of Capital Increase:")
+label_percentage.grid(row=1, column=0, padx=10, sticky='w')  # Align left
 
 entry_percentage = tk.Entry(root)
-entry_percentage.grid(row=1, column=1)
+entry_percentage.grid(row=1, column=1, padx=10)
 
-label_desired_stock_count = tk.Label(root, text="How many stocks you need to have after the capital increase:", bg=label_bg_color)
-label_desired_stock_count.grid(row=2, column=0, sticky="w")
+calculate_button = tk.Button(root, text="Calculate", command=calculate_stock_options, bg="dark orange", bd=0)
+calculate_button.grid(row=2, column=0, columnspan=2, pady=10)
 
-entry_desired_stock_count = tk.Entry(root)
-entry_desired_stock_count.grid(row=2, column=1)
+yeni_lot_sayisi_label = tk.Label(root, text="", fg="blue")
+yeni_lot_sayisi_label.grid(row=3, column=0, columnspan=2, pady=(10, 0), sticky='w')  # Left align yeni_lot_sayisi_label
 
-calculate_button = tk.Button(root, text="Calculate", command=calculate_stock_options, bg="dark orange")
-calculate_button.grid(row=3, column=1, sticky="se")
+options_label = tk.Label(root, text="Options:")
+options_label.grid(row=4, column=0, columnspan=2, pady=10, sticky='w')  # Left align options_label
 
-decimal_label = tk.Label(root, text="", bg=label_bg_color)
-decimal_label.grid(row=4, columnspan=2)
+# Function to properly close the application
+def on_closing():
+    root.destroy()
 
-stocks_to_buy_label = tk.Label(root, text="", bg=label_bg_color)
-stocks_to_buy_label.grid(row=5, columnspan=2)
+root.protocol("WM_DELETE_WINDOW", on_closing)  # Call on_closing when closing the window
 
-error_label = tk.Label(root, text="", fg="red", bg=label_bg_color)
-error_label.grid(row=6, columnspan=2)
-
-options_label = tk.Label(root, text="", bg=label_bg_color)
-options_label.grid(row=7, columnspan=2)
-
+# Start the GUI event loop
 root.mainloop()
